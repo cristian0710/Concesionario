@@ -8,6 +8,7 @@ import PublicLayout from 'layouts/PublicLayout';
 import PrivateLayout from 'layouts/PrivateLayout';
 import Clientes from 'pages/admin/Clientes';
 import Vehiculos from 'pages/admin/Vehiculos';
+import AuthLayout from 'layouts/AuthLayout';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <Login />,
+    element: <AuthLayout><Login /></AuthLayout>,
   },
   {
     path: '/registro',
