@@ -9,6 +9,7 @@ import PrivateLayout from 'layouts/PrivateLayout';
 import Clientes from 'pages/admin/Clientes';
 import Vehiculos from 'pages/admin/Vehiculos';
 import AuthLayout from 'layouts/AuthLayout';
+import PaginaPrueba from 'pages/PaginaPrueba';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: '/admin/vehiculos',
     element: <PrivateLayout ><Vehiculos /></PrivateLayout>,
+  },
+  {
+    path: '/pagina_prueba',
+    element: <PrivateLayout><PaginaPrueba /></PrivateLayout>
   }
 ]);
 
