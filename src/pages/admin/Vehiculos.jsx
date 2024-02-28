@@ -55,9 +55,9 @@ const Vehiculos = () => {
   }, []);
 
   // useState [ get , set]
-  const [nombreVehiculo, setNombreVehiculo] = useState();
-  const [marcaVehiculo, setMarcaVehiculo] = useState();
-  const [modeloVehiculo, setModeloVehiculo] = useState();
+  const [nombreVehiculo, setNombreVehiculo] = useState("");
+  const [marcaVehiculo, setMarcaVehiculo] = useState("");
+  const [modeloVehiculo, setModeloVehiculo] = useState("");
   const [mostrarTabla, setMostarTabla] = useState(false);
   const [vehiculosList, setVehiculosList] = useState([]);
 
@@ -72,8 +72,12 @@ const Vehiculos = () => {
 
   const enviarDatosAlBackend = () => {
     console.log(`concatenados: ${nombreVehiculo} ${marcaVehiculo} ${modeloVehiculo}`);
-    toast.success('Vehiculo agregado con exito');
-    autosBackend.push({nombre: nombreVehiculo, marca: marcaVehiculo, modelo: modeloVehiculo});
+    if(nombreVehiculo === "" || marcaVehiculo === "" || modeloVehiculo === ""){
+      toast.error('Información incompleta');
+    }else{
+      autosBackend.push({nombre: nombreVehiculo, marca: marcaVehiculo, modelo: modeloVehiculo});
+      toast.success('Vehiculo agregado con exito');
+    }
   }
 
   useEffect( () => {
@@ -94,12 +98,12 @@ const Vehiculos = () => {
         </div>
           <label htmlFor="nombre">
             Nombre del vehiculo
-            <input onChange={cambioNombre} value={nombreVehiculo} type="text" name='nombre' placeholder='Nombre del vehiculo'/>
+            <input onChange={cambioNombre} value={nombreVehiculo} type="text" name='nombre' placeholder='Nombre del vehiculo' required/>
           </label>
           <label htmlFor="marca">
             Marca del vehiculo 
-            <select name="marca" value={marcaVehiculo} onChange={(e) => {setMarcaVehiculo(e.target.value);}} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-              <option disabled>Seleccione una opción</option>
+            <select name="marca" value={marcaVehiculo} onChange={(e) => {setMarcaVehiculo(e.target.value);}} required className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+              <option disabled selected>Seleccione una opción</option>
               <option>Mazda</option>
               <option>Toyota</option>
               <option>Chevrolet</option>
@@ -107,12 +111,17 @@ const Vehiculos = () => {
               <option>Ford</option>
             </select>
           </label>
-          <label htmlFor="">
+          <label htmlFor="modelo">
             Modelo del vehiculo
-            <input value={modeloVehiculo} onChange={(e) => {setModeloVehiculo(e.target.value);}} type="number" name='modelo' placeholder='Modelo' min={1992} max={2022}/>
+            <input value={modeloVehiculo} onChange={(e) => {setModeloVehiculo(e.target.value);}} type="number" name='modelo' placeholder='Modelo' min={1992} max={2022} required/>
           </label>
         <div className='flex justify-center mt-10'>
-          <button type='button' onClick={enviarDatosAlBackend} className='bg-indigo-500 text-white p-4 rounded-xl justify-center w-1/2 font-bold mb-10'>Agregar Vehiculo</button>
+          <button type='button' onClick={ () => {
+            enviarDatosAlBackend();
+            if(mostrarTabla === true){
+              setMostarTabla(false);
+            }
+          }} className='bg-indigo-500 text-white p-4 rounded-xl justify-center w-1/2 font-bold mb-10'>Agregar Vehiculo</button>
         </div>
         <div className='flex justify-center'>
         {
