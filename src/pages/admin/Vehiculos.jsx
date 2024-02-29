@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import 'styles/styles.css';
 import img_iconoMas from 'media/img_iconoMas.svg';
 //Libreria de react-toastify
@@ -54,6 +54,9 @@ const Vehiculos = () => {
   useEffect( () => {
   }, []);
 
+  //useRef
+  const formulario = useRef(null);
+
   // useState [ get , set]
   const [nombreVehiculo, setNombreVehiculo] = useState("");
   const [marcaVehiculo, setMarcaVehiculo] = useState("");
@@ -70,14 +73,34 @@ const Vehiculos = () => {
     setNombreVehiculo(e.target.value);
   }
 
-  const enviarDatosAlBackend = () => {
-    console.log(`concatenados: ${nombreVehiculo} ${marcaVehiculo} ${modeloVehiculo}`);
-    if(nombreVehiculo === "" || marcaVehiculo === "" || modeloVehiculo === ""){
-      toast.error('Información incompleta');
-    }else{
-      autosBackend.push({nombre: nombreVehiculo, marca: marcaVehiculo, modelo: modeloVehiculo});
-      toast.success('Vehiculo agregado con exito');
-    }
+  // Funcion cuando no se utiliza submit en el boton del formulario
+  // const enviarDatosAlBackend = () => {
+  //   console.log(`concatenados: ${nombreVehiculo} ${marcaVehiculo} ${modeloVehiculo}`);
+  //   if(nombreVehiculo === "" || marcaVehiculo === "" || modeloVehiculo === ""){
+  //     toast.error('Información incompleta');
+  //   }else{
+  //     autosBackend.push({nombre: nombreVehiculo, marca: marcaVehiculo, modelo: modeloVehiculo});
+  //     toast.success('Vehiculo agregado con exito');
+  //   }
+  // }
+
+  // Funcion utilizando el submit del formulario
+  const submitForm = (e) =>{
+    //prevenir el evento que redirige alguna otra parte o pagina
+    e.preventDefault();
+    //hacer uso del useRef -> trae la información de un formulario
+    const formData = new FormData(formulario.current);
+    console.log("Datos del form enviados", formData);
+
+    const nuevoVehiculo = {};
+    formData.forEach((value, key) => {
+      console.log(key, value); //imprime llave valor
+      nuevoVehiculo[key] = value;
+      console.log(nuevoVehiculo); //imprime llave valor agregado a la lista
+    });
+
+    setVehiculosList([...vehiculosList, nuevoVehiculo]);
+    toast.success('Vehiculo agregado');
   }
 
   useEffect( () => {
@@ -87,7 +110,7 @@ const Vehiculos = () => {
 
   return (
     <div className='flex flex-row w-full justify-center bg-gray-200 mb-10 '>
-      <form className='w-92 mt-10'>
+      <form ref={formulario} onSubmit={submitForm} className='w-92 mt-10'>
         <div className='flex justify-between m-10'>
           <div className='flex items-center'>
             <label className='text-3xl text-green-600 font-bold' htmlFor="CrearVehiculo">Crear Vehiculo</label>
@@ -116,12 +139,7 @@ const Vehiculos = () => {
             <input value={modeloVehiculo} onChange={(e) => {setModeloVehiculo(e.target.value);}} type="number" name='modelo' placeholder='Modelo' min={1992} max={2022} required/>
           </label>
         <div className='flex justify-center mt-10'>
-          <button type='button' onClick={ () => {
-            enviarDatosAlBackend();
-            if(mostrarTabla === true){
-              setMostarTabla(false);
-            }
-          }} className='bg-indigo-500 text-white p-4 rounded-xl justify-center w-1/2 font-bold mb-10'>Agregar Vehiculo</button>
+          <button type='submit' className='bg-indigo-500 text-white p-4 rounded-xl justify-center w-1/2 font-bold mb-10'>Agregar Vehiculo</button>
         </div>
         <div className='flex justify-center'>
         {
