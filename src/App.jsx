@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
 import './styles/styles.css';
 import Index from './pages/Index';
 import Login from './pages/Login';
@@ -10,6 +11,8 @@ import Clientes from 'pages/admin/Clientes';
 import Vehiculos from 'pages/admin/Vehiculos';
 import AuthLayout from 'layouts/AuthLayout';
 import PaginaPrueba from 'pages/PaginaPrueba';
+import { DarkModeContext } from 'context/darkMode';
+
 
 const router = createBrowserRouter([
   {
@@ -42,10 +45,27 @@ const router = createBrowserRouter([
   }
 ]);
 
+// function App() {
+//   return (
+//     <div>
+//         <RouterProvider router={router}/>
+//     </div>
+//   );
+// }
+
+// Utilizando Context en toda la aplicacion
 function App() {
+  const [ darkMode, setDarkMode] = useState(false);
+  
+  useEffect(() => {
+    console.log('modo Dark', darkMode);
+  }, [darkMode])
+  
   return (
     <div>
+      <DarkModeContext.Provider value={{darkMode, setDarkMode}}>
         <RouterProvider router={router}/>
+      </DarkModeContext.Provider>
     </div>
   );
 }
