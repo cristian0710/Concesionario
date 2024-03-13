@@ -9,3 +9,27 @@ input[type=text],[type=email],[type=date],[type=password],[type=number], [type=s
     box-sizing: border-box;
     border-radius: 5px;
 }
+
+.tabla td, th{
+    padding: 8px;
+    border: 1px solid rgb(188, 188, 188);
+    color: rgb(0, 0, 0);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+}
+
+.tabla th{
+    background-color: rgb(48, 192, 158);
+}
+
+/*PseudoClase aplicar color a las filas pares(odd) o impares(even)*/
+.tabla tr:nth-child(even){
+    background-color: rgb(220, 220, 220);
+}
+
+.tabla tr:hover{
+    background-color: aqua;
+    cursor: pointer;
+}
+

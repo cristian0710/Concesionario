@@ -1,0 +1,15 @@
+/*Hacer la pagina responsive utilizando "media queries css" para ocultar el sidebar*/
+
+/*ocultar cuando el sidebar cuando el ancho de pantalla sea menor a 600 pixeles*/
+@media (max-width: 600px) {
+  .sidebar{
+    display: none;
+  }
+}
+
+/*ocultar cuando el sidebar cuando el alto de pantalla sea menor a 600 pixeles*/
+@media (max-height: 600px) {
+  .sidebar{
+    display: none;
+  }
+}

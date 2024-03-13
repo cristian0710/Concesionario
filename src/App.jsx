@@ -12,6 +12,7 @@ import Vehiculos from 'pages/admin/Vehiculos';
 import AuthLayout from 'layouts/AuthLayout';
 import PaginaPrueba from 'pages/PaginaPrueba';
 import { DarkModeContext } from 'context/darkMode';
+import Ventas from 'pages/admin/Ventas';
 
 
 const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: '/admin/clientes',
     element: <PrivateLayout ><Clientes /></PrivateLayout>,
+  },
+  {
+    path: '/admin/ventas',
+    element: <PrivateLayout ><Ventas /></PrivateLayout>,
   },
   {
     path: '/admin/vehiculos',
