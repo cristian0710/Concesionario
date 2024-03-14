@@ -4,6 +4,7 @@ import 'styles/styles.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { nanoid } from 'nanoid';
+import { Dialog, Tooltip } from '@mui/material';
 
   const autosBackend = [
     {
@@ -158,6 +159,28 @@ const Vehiculos = () => {
 
 const TablaVehiculos = ({ props }) => {
 
+  const [openDialogo, setOpenDialogo] = useState(false);
+  const [busqueda, setBusqueda] = useState('');
+  const [vehiculosFiltrados, setVehiculosFiltrados] = useState(props);
+
+  useEffect(() => {
+    console.log(`la busqueda es: ${busqueda}`);
+    // console.log(props.filter((elemento) => {
+    //   console.log('elemento', elemento);
+    //   //Busqueda por columna en posision del elemento "nombre" 
+    //   // return elemento.nombre.includes(busqueda);
+    //   //Busqueda por columna en posision del elemento "nombre" incluyendo mayuscullas
+    //   // return elemento.nombre.toLowerCase().includes(busqueda.toLowerCase());
+    //   //Busqueda por cualquier coincidencia de las columnas del objeto
+    //   return JSON.stringify(elemento).includes(busqueda);
+    // }));
+    setVehiculosFiltrados(
+      props.filter((elemento) => {
+        return JSON.stringify(elemento).toLowerCase().includes(busqueda.toLowerCase());
+      })
+    );
+  }, [busqueda, props]);
+
   useEffect( () => {
     console.log('Este es el estado de vehiculos en el componente de tabla ',props);
   }, [props]);
@@ -191,6 +214,7 @@ const TablaVehiculos = ({ props }) => {
 
     //Tabla estilo 2 CSS
     <div>
+      <input value={busqueda} onChange={(e) => setBusqueda(e.target.value)} placeholder='Buscar' className='border-gray-700 px-3 py-1 rounded-md mb-4'/>
       <table class="tabla">
         <thead>
           <tr>
@@ -202,7 +226,7 @@ const TablaVehiculos = ({ props }) => {
         </thead>
         <tbody>
           {
-            props.map( (objetoVehiculo) => {
+            vehiculosFiltrados.map( (objetoVehiculo) => {
               return (
                 //utilizar librería de nanoid en las tablas
                 <tr key={nanoid()}>
@@ -211,10 +235,27 @@ const TablaVehiculos = ({ props }) => {
                   <td>{objetoVehiculo.modelo}</td>
                   <td>
                     <div className='flex w-full justify-around'>
-                      <i className="fa-solid fa-pen-to-square text-blue-400 hover:text-blue-700"/>
-                      <i className="fa-solid fa-solid fa-trash text-blue-400 hover:text-red-400"/>
+                      <Tooltip title="Editar Vehiculo" placement="top" arrow>
+                        <i className="fa-solid fa-pen-to-square text-blue-400 hover:text-blue-700"/>
+                      </Tooltip>
+                      <Tooltip title="Eliminar Vehiculo" placement="top" arrow>
+                        <i onClick={() => setOpenDialogo(true)} className="fa-solid fa-solid fa-trash text-blue-400 hover:text-red-400"/>
+                      </Tooltip>
                     </div>
                   </td>
+                  <div> 
+                    <Dialog open={openDialogo}>
+                      <div className='flex flex-col p-8 justify-center'>
+                        <h1 className='m-4'>¿Seguro que quiere eliminar el elemento?</h1>
+                        <div className='flex w-full justify-center'>
+                          <button className='p-4 w-32 bg-green-500 mb-4 rounded-lg text-white font-bold hover:bg-green-700'>Eliminar</button>
+                        </div>
+                        <div className='flex w-full justify-center'>
+                          <button onClick={() => setOpenDialogo(false)} className='p-4 w-32 bg-red-500 rounded-lg text-white font-bold hover:bg-red-700'>Cancelar</button>
+                        </div>
+                      </div>
+                    </Dialog>
+                  </div>
                 </tr>
               )
             })
